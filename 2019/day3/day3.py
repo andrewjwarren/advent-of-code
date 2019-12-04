@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 class Wire:
-    def __init__(self):
-        self.start = (0,0)
+    def __init__(self): 
         self.current = (0,0)
         self.points = {}
         self._counter = 0
+
     def right(self, spaces):
         x, y = self.current
         for _ in range(spaces):
@@ -79,8 +79,10 @@ def steps_from_start(point, wire1, wire2):
     return w1 + w2
 
 if __name__ == '__main__':
+    
     with open('input.txt') as f:
         data = f.read().split()
+
     wire1 = build_wire(data[0])
     wire2 = build_wire(data[1])
     intersections = find_intersections(wire1, wire2)
