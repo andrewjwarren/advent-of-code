@@ -29,3 +29,30 @@ func TestMakeParameters(t *testing.T) {
 		}
 	}
 }
+
+func TestReadIntcode(t *testing.T) {
+	testData := [][]int{
+		{1002, 4, 3, 4, 33},
+		{1101, 100, -1, 4, 0},
+		{1, 1, 1, 4, 99, 5, 6, 0, 99},
+	}
+	testAnswers := [][]int{
+		{1002, 4, 3, 4, 99},
+		{1101, 100, -1, 4, 99},
+		{30, 1, 1, 4, 2, 5, 6, 0, 99},
+	}
+	for i, data := range testData {
+		answer := testAnswers[i]
+		result := readIntcode(data)
+		if len(result) != len(answer) {
+			t.Fail()
+		} else {
+			for j, res := range result {
+				if res != answer[j] {
+					t.Fail()
+				}
+			}
+		}
+	}
+
+}

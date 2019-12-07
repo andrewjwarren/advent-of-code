@@ -22,7 +22,7 @@ func execute(intcode []int, noun, verb int) int {
 
 func parseOpcode(opcode int) (int, []int) {
 	code := strconv.Itoa(opcode)
-	o := 0
+	var o int
 	var p []int
 	if len(code) < 3 {
 		o, _ = strconv.Atoi(code)
@@ -56,20 +56,46 @@ func makeParameters(modes, params []int) []parameter {
 
 // }
 
+var numPositions = map[int]int{
+	1: 3,
+	2: 3,
+	3: 1,
+	4: 1,
+	5: 2,
+	6: 2,
+	7: 3,
+	8: 3,
+}
+
+func paramValues(params []parameter, data []int) (int, int, int) {
+	p := make([]int, 0, 3)
+	for _, param := range params {
+		if param.mode == 1 {
+			p = append(p, param.value)
+		} else {
+			p = append(p, data[param.value])
+		}
+	}
+	return p[0], p[1], p[2]
+}
+
 func readIntcode(data []int) []int {
 	instructionPointer := 0
+	end := 0
 	for {
-		opcode := data[instructionPointer]
-		pos1 := data[instructionPointer+1]
-		pos2 := data[instructionPointer+2]
-		pos3 := data[instructionPointer+3]
+		opcode, modes := parseOpcode(data[instructionPointer])
+		end = instructionPointer + 1 + numPositions[opcode]
+		p := data[instructionPointer+1 : end]
+		params := makeParameters(modes, p)
+
 		if opcode == 1 {
-			data[pos3] = data[pos1] + data[pos2]
+			data[paramValue(params[0])] = paramValue(params[0]) + paramValue(params[1])
 		} else if opcode == 2 {
 			data[pos3] = data[pos1] * data[pos2]
 		} else if opcode == 99 {
 			break
 		}
+		instructionPointer = end
 	}
 	return data
 }
@@ -88,19 +114,6 @@ func main() {
 		}
 		intcode = append(intcode, number)
 	}
-
-	for noun := 0; noun < 100; noun++ {
-		completed := false
-		for verb := 0; verb < 100; verb++ {
-			result := execute(intcode, noun, verb)
-			if result == 19690720 {
-				fmt.Println(100*noun + verb)
-				completed = true
-				break
-			}
-			if completed {
-				break
-			}
-		}
-	}
+	k := readIntcode([]int{2, 4, 3, 4, 99})
+	fmt.Println(k)
 }
