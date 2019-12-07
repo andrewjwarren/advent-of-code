@@ -6,7 +6,7 @@ func TestIndirectOrbits(t *testing.T) {
 	p, _ := setup()
 	total := 0
 	for _, planet := range p {
-		total += len(planet.indirect_orbits())
+		total += len(planet.indirectOrbits())
 	}
 	if total != 314702 {
 		t.Errorf("%d != 314702", total)

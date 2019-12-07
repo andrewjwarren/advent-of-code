@@ -8,8 +8,8 @@ import (
 
 // type Planet interface {
 // 	distance()
-// 	indirect_orbits()
-// 	direct_orbit()
+// 	indirectOrbits()
+// 	directOrbit()
 // }
 
 type planet struct {
@@ -19,7 +19,7 @@ type planet struct {
 }
 
 func (p *planet) distance(name string) int {
-	planets := p.indirect_orbits()
+	planets := p.indirectOrbits()
 	for i, planet := range planets {
 		if strings.EqualFold(planet.name, name) {
 			return i
@@ -29,7 +29,7 @@ func (p *planet) distance(name string) int {
 	return -1
 }
 
-func (p *planet) indirect_orbits() []*planet {
+func (p *planet) indirectOrbits() []*planet {
 	iPlanets := make([]*planet, 0, 2)
 	planet := p.orbits
 	for {
@@ -42,7 +42,7 @@ func (p *planet) indirect_orbits() []*planet {
 	return iPlanets
 }
 
-func (p *planet) direct_orbit() *planet {
+func (p *planet) directOrbit() *planet {
 	return p.orbits
 }
 
@@ -76,8 +76,8 @@ func setup() (map[string]*planet, error) {
 }
 
 func findIntersection(p1, p2 *planet) *planet {
-	indirects := p2.indirect_orbits()
-	for _, a := range p1.indirect_orbits() {
+	indirects := p2.indirectOrbits()
+	for _, a := range p1.indirectOrbits() {
 		for _, b := range indirects {
 			if a.name == b.name {
 				return a
@@ -91,7 +91,7 @@ func main() {
 	p, _ := setup()
 	total := 0
 	for _, planet := range p {
-		total += len(planet.indirect_orbits())
+		total += len(planet.indirectOrbits())
 	}
 	fmt.Println(total)
 	y := p["YOU"]
