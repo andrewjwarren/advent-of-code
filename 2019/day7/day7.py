@@ -125,7 +125,6 @@ class Amplifier:
                 self.data[p1[-1]] = self.input
             elif opcode == 4:
                 self.output = parameter_value(p1, self.data)
-                
 
         self.instruction_pointer = self.end
 
