@@ -103,11 +103,19 @@ def opcode_operation(opcode):
     }
     return operation[opcode]
 
+
 def parse_opcode(opcode):
-    opcode = str(opcode)
-    op, parameter_modes = int(opcode[-2:]), opcode[:-2]
-    modes = [int(x) for x in reversed(parameter_modes)] 
-    return (op, modes)
+    if opcode < 10:
+        return (opcode, [])
+    else:  
+        op = opcode % 100
+        params = opcode // 100
+        pos_nums = []
+        while params != 0:
+            pos_nums.append(params % 10)
+            params //= 10
+        return (op, pos_nums)
+
 
 def parameter_value(mode_and_param, array):
     mode, param = mode_and_param
