@@ -198,6 +198,8 @@ class robot:
             n = "".join(x)
             k.append(n)
         print("\n".join(k))
+        print('')
+        print('')
 
     def _make_grid(self, x, y):
         for i in range(y):
